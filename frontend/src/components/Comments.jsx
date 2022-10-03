@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Comment from "./Comment";
-import axios from "axios";
+import { axiosInstance } from "../utils/axiosConfig";
 
 const Container = styled.div`
   display: flex;
@@ -59,7 +59,7 @@ const Comments = ({ videoId, loggedInUser }) => {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const res = await axios.get(`/comments/${videoId}`);
+        const res = await axiosInstance.get(`/comments/${videoId}`);
         console.log(res.data);
         setComments((prev) => res.data.comments);
       } catch (error) {
@@ -78,7 +78,7 @@ const Comments = ({ videoId, loggedInUser }) => {
       return;
     }
     try {
-      const res = await axios.post(`/comments`, {
+      const res = await axiosInstance.post(`/comments`, {
         videoId,
         description: newCommentText,
       });

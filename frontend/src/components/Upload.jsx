@@ -8,8 +8,8 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import app from "../firebase";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { axiosInstance } from "../utils/axiosConfig";
 
 const Container = styled.div`
   width: 100%;
@@ -164,7 +164,7 @@ const Upload = ({ setOpen }) => {
   const handleUpload = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(`/videos`, { ...inputs, tags });
+      const res = await axiosInstance.post(`/videos`, { ...inputs, tags });
       console.log(res.data);
       setOpen((prev) => false);
       navigate(`/`);

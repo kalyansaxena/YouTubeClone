@@ -8,7 +8,6 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import Comments from "../components/Comments";
 import { useLocation } from "react-router-dom";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import {
   dislike,
@@ -20,6 +19,7 @@ import {
 import { formatDistanceToNow } from "date-fns";
 import { subscription } from "../redux/userSlice";
 import Recommendations from "../components/Recommendations";
+import { axiosInstance } from "../utils/axiosConfig";
 
 const Container = styled.div`
   display: flex;
@@ -130,7 +130,7 @@ const Video = () => {
   useEffect(() => {
     const addView = async () => {
       try {
-        await axios.put(`/videos/view/${videoId}`);
+        await axiosInstance.put(`/videos/view/${videoId}`);
       } catch (error) {
         console.log(error);
       }
@@ -138,7 +138,7 @@ const Video = () => {
 
     const fetchChannel = async () => {
       try {
-        const res = await axios.get(`/users/${currentVideo?.userId}`);
+        const res = await axiosInstance.get(`/users/${currentVideo?.userId}`);
         setChannel((prev) => res.data.user);
       } catch (error) {
         console.log(error);
@@ -148,7 +148,7 @@ const Video = () => {
     const fetchVideo = async () => {
       dispatch(fetchVideoStart());
       try {
-        const res = await axios.get(`/videos/${videoId}`);
+        const res = await axiosInstance.get(`/videos/${videoId}`);
         console.log(res.data);
         dispatch(fetchVideoSuccess(res.data.video));
         fetchChannel();
@@ -168,7 +168,7 @@ const Video = () => {
       return;
     }
     try {
-      await axios.put(`/users/like/${currentVideo?._id}`);
+      await axiosInstance.put(`/users/like/${currentVideo?._id}`);
       dispatch(like(loggedInUser?._id));
     } catch (error) {
       console.log(error);
@@ -181,7 +181,7 @@ const Video = () => {
       return;
     }
     try {
-      await axios.put(`/users/dislike/${currentVideo?._id}`);
+      await axiosInstance.put(`/users/dislike/${currentVideo?._id}`);
       dispatch(dislike(loggedInUser?._id));
     } catch (error) {
       console.log(error);
@@ -195,8 +195,8 @@ const Video = () => {
     }
     try {
       loggedInUser.subscribedUsers.includes(channel?._id)
-        ? await axios.put(`/users/unsub/${channel?._id}`)
-        : await axios.put(`/users/sub/${channel?._id}`);
+        ? await axiosInstance.put(`/users/unsub/${channel?._id}`)
+        : await axiosInstance.put(`/users/sub/${channel?._id}`);
       dispatch(subscription(channel?._id));
     } catch (error) {
       console.log(error);

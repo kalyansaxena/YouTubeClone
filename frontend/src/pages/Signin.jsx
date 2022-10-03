@@ -1,12 +1,12 @@
 import React from "react";
 import { useState } from "react";
 import styled from "styled-components";
-import axios from "axios";
 import { useDispatch } from "react-redux";
 import { loginError, loginStart, loginSuccess } from "../redux/userSlice";
 import { auth, googleAuthProvider } from "../firebase";
 import { signInWithPopup } from "firebase/auth";
 import { Link } from "react-router-dom";
+import { axiosInstance } from "../utils/axiosConfig";
 
 const Container = styled.div`
   display: flex;
@@ -70,7 +70,7 @@ const Signin = () => {
     e.preventDefault();
     dispatch(loginStart());
     try {
-      const res = await axios.post("/auth/login", { email, password });
+      const res = await axiosInstance.post("/auth/login", { email, password });
       dispatch(loginSuccess(res.data.user));
     } catch (error) {
       console.log(error);
@@ -82,7 +82,7 @@ const Signin = () => {
     dispatch(loginStart());
     signInWithPopup(auth, googleAuthProvider)
       .then(async (result) => {
-        await axios
+        await axiosInstance
           .post("/auth/google", {
             name: result.user.displayName,
             email: result.user.email,

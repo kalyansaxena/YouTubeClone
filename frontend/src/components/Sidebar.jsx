@@ -51,7 +51,6 @@ const Item = styled.div`
   align-items: center;
   gap: 20px;
   cursor: pointer;
-  /* padding: 0.5rem 0; */
   padding: 0.5rem 2rem;
 
   &:hover {

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import axios from "axios";
 import { formatDistanceToNow } from "date-fns";
+import { axiosInstance } from "../utils/axiosConfig";
 
 const Container = styled.div`
   width: ${(props) => (props.type === "recommendations" ? "100%" : "300px")};
@@ -62,7 +62,7 @@ const Card = ({ type, video }) => {
   useEffect(() => {
     const fetchChannel = async () => {
       try {
-        const res = await axios.get(`/users/${video.userId}`);
+        const res = await axiosInstance.get(`/users/${video.userId}`);
         setChannel((prev) => res.data.user);
       } catch (error) {
         console.log(error);

@@ -69,13 +69,6 @@ const NavItems = styled.div`
   cursor: pointer;
 `;
 
-// const Avatar = styled.img`
-//   width: 32px;
-//   height: 32px;
-//   border-radius: 50%;
-//   background-color: #999;
-// `;
-
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const { loggedInUser } = useSelector((state) => state.user);
@@ -102,7 +95,6 @@ const Navbar = () => {
               ></VideoCallOutlinedIcon>
               <NotificationsOutlinedIcon />
               <UserMenu loggedInUser={loggedInUser} />
-              {/* <Avatar src={loggedInUser?.img} referrerpolicy="no-referrer" /> */}
             </NavItems>
           ) : (
             <Link

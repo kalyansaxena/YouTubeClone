@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import styled from "styled-components";
 import Card from "../components/Card";
-import axios from "axios";
 import { useLocation } from "react-router-dom";
+import { axiosInstance } from "../utils/axiosConfig";
 
 const Container = styled.div`
   display: flex;
@@ -18,7 +18,7 @@ const Search = () => {
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const res = await axios.get(`/videos/search${searchQuery}`);
+        const res = await axiosInstance.get(`/videos/search${searchQuery}`);
         setVideos((prev) => res.data.videos);
       } catch (error) {
         console.log(error);

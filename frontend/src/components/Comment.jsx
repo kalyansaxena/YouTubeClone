@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import axios from "axios";
 import { formatDistanceToNow } from "date-fns";
+import { axiosInstance } from "../utils/axiosConfig";
 
 const Container = styled.div`
   display: flex;
@@ -45,7 +45,7 @@ const Comment = ({ comment }) => {
   useEffect(() => {
     const fetchChannel = async () => {
       try {
-        const res = await axios.get(`/users/${comment?.userId}`);
+        const res = await axiosInstance.get(`/users/${comment?.userId}`);
         setChannel((prev) => res.data.user);
       } catch (error) {
         console.log(error);
