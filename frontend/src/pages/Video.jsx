@@ -20,6 +20,7 @@ import { formatDistanceToNow } from "date-fns";
 import { subscription } from "../redux/userSlice";
 import Recommendations from "../components/Recommendations";
 import { axiosInstance } from "../utils/axiosConfig";
+import Swal from "sweetalert2";
 
 const Container = styled.div`
   display: flex;
@@ -164,7 +165,11 @@ const Video = () => {
 
   const handleLike = async () => {
     if (!loggedInUser) {
-      alert("Please signin first");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Sign In required!",
+      });
       return;
     }
     try {
@@ -177,7 +182,11 @@ const Video = () => {
 
   const handleDislike = async () => {
     if (!loggedInUser) {
-      alert("Please signin first");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Sign In required!",
+      });
       return;
     }
     try {
@@ -190,7 +199,11 @@ const Video = () => {
 
   const handleSubscription = async () => {
     if (!loggedInUser) {
-      alert("Please signin first");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Sign In required!",
+      });
       return;
     }
     try {

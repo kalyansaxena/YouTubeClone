@@ -7,12 +7,12 @@ import { auth, googleAuthProvider } from "../firebase";
 import { signInWithPopup } from "firebase/auth";
 import { Link } from "react-router-dom";
 import { axiosInstance } from "../utils/axiosConfig";
+import Swal from "sweetalert2";
 
 const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  /* height: calc(100vh-56px); */
   height: 83vh;
   color: ${({ theme }) => theme.text};
 `;
@@ -72,6 +72,11 @@ const Signin = () => {
     try {
       const res = await axiosInstance.post("/auth/login", { email, password });
       dispatch(loginSuccess(res.data.user));
+      Swal.fire(
+        `Welcome ${res.data?.user.name}`,
+        "Login Successful!",
+        "success"
+      );
     } catch (error) {
       console.log(error);
       dispatch(loginError());
@@ -90,6 +95,11 @@ const Signin = () => {
           })
           .then((res) => {
             dispatch(loginSuccess(res.data.user));
+            Swal.fire(
+              `Welcome ${res.data?.user.name}`,
+              "Login Successful!",
+              "success"
+            );
           });
       })
       .catch((error) => {

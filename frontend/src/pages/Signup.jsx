@@ -8,6 +8,7 @@ import { signInWithPopup } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import UploadProfileImage from "../components/UploadProfileImage";
 import { axiosInstance } from "../utils/axiosConfig";
+import Swal from "sweetalert2";
 
 const Container = styled.div`
   display: flex;
@@ -73,7 +74,11 @@ const Signup = () => {
       password.length === 0 ||
       !img
     ) {
-      alert("Please provide name, email, password & profile image to signup");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Please provide name, email, password & profile image to signup",
+      });
     }
     dispatch(signupStart());
     try {
@@ -84,6 +89,11 @@ const Signup = () => {
         img: imgUrl,
       });
       dispatch(signupSuccess(res.data.user));
+      Swal.fire(
+        `Welcome ${res.data?.user.name}`,
+        "Sign up Successful!",
+        "success"
+      );
       navigate(`/`);
     } catch (error) {
       console.log(error);
@@ -103,6 +113,11 @@ const Signup = () => {
           })
           .then((res) => {
             dispatch(signupSuccess(res.data.user));
+            Swal.fire(
+              `Welcome ${res.data?.user.name}`,
+              "Sign up Successful!",
+              "success"
+            );
           });
       })
       .catch((error) => {

@@ -10,6 +10,7 @@ import {
 import app from "../firebase";
 import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "../utils/axiosConfig";
+import Swal from "sweetalert2";
 
 const Container = styled.div`
   width: 100%;
@@ -164,8 +165,12 @@ const Upload = ({ setOpen }) => {
   const handleUpload = async (e) => {
     e.preventDefault();
     try {
-      const res = await axiosInstance.post(`/videos`, { ...inputs, tags });
-      console.log(res.data);
+      await axiosInstance.post(`/videos`, { ...inputs, tags });
+      Swal.fire(
+        "Good job!",
+        "Video has been uploaded successfully!",
+        "success"
+      );
       setOpen((prev) => false);
       navigate(`/`);
     } catch (error) {

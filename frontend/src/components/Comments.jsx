@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Comment from "./Comment";
 import { axiosInstance } from "../utils/axiosConfig";
+import Swal from "sweetalert2";
 
 const Container = styled.div`
   display: flex;
@@ -73,7 +74,11 @@ const Comments = ({ videoId, loggedInUser }) => {
   const handleCommentSubmission = async (e) => {
     console.log(newCommentText);
     if (!loggedInUser) {
-      alert("Please signin first");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Sign In required!",
+      });
       settoggleCommentButtons((prev) => false);
       return;
     }
@@ -82,7 +87,7 @@ const Comments = ({ videoId, loggedInUser }) => {
         videoId,
         description: newCommentText,
       });
-      console.log(res.data);
+      Swal.fire(`Good job!`, "Your comment was Successful!", "success");
       setComments((prev) => [...prev, res.data.comment]);
       setNewCommentText("");
       settoggleCommentButtons((prev) => false);
@@ -106,7 +111,6 @@ const Comments = ({ videoId, loggedInUser }) => {
             value={newCommentText}
             onChange={(e) => setNewCommentText(e.target.value)}
             onFocus={(e) => settoggleCommentButtons((prev) => true)}
-            // onBlur={(e) => settoggleCommentButtons((prev) => false)}
           />
         </NewComment>
       )}

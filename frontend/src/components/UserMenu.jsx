@@ -11,6 +11,7 @@ import Logout from "@mui/icons-material/Logout";
 import { useDispatch } from "react-redux";
 import { logout } from "../redux/userSlice";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function UserMenu({ loggedInUser }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -28,6 +29,7 @@ export default function UserMenu({ loggedInUser }) {
 
   const handleLogout = () => {
     dispatch(logout());
+    Swal.fire(`See Yaa!`, "Logout Successful!", "success");
     navigate("/");
   };
 
