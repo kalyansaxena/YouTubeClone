@@ -139,15 +139,6 @@ const Video = () => {
       }
     };
 
-    const fetchChannel = async () => {
-      try {
-        const res = await axiosInstance.get(`/users/${currentVideo?.userId}`);
-        setChannel((prev) => res.data.user);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
     const fetchVideo = async () => {
       dispatch(fetchVideoStart());
       try {
@@ -155,7 +146,6 @@ const Video = () => {
         if (videoIndex !== -1) {
           let video = videos[videoIndex];
           dispatch(fetchVideoSuccess(video));
-          fetchChannel();
           addView();
         } else {
           dispatch(fetchVideoSuccess(null));
@@ -173,7 +163,22 @@ const Video = () => {
     };
 
     fetchVideo();
-  }, [videoId, dispatch, currentVideo?.userId, videos]);
+  }, [dispatch, videoId, videos]);
+
+  useEffect(() => {
+    const fetchChannel = async () => {
+      try {
+        const res = await axiosInstance.get(`/users/${currentVideo?.userId}`);
+        setChannel((prev) => res.data.user);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (currentVideo) {
+      fetchChannel();
+    }
+  }, [currentVideo]);
 
   const handleLike = async () => {
     if (!loggedInUser) {
@@ -270,7 +275,7 @@ const Video = () => {
         <Title>{currentVideo && currentVideo.title}</Title>
         <Details>
           <Info>
-            {currentVideo && currentVideo.views} views •{" "}
+            {currentVideo && currentVideo.views + 1} views •{" "}
             {currentVideo &&
               formatDistanceToNow(new Date(currentVideo.createdAt), {
                 addSuffix: true,
