@@ -10,6 +10,7 @@ import {
   fetchVideosStart,
   fetchVideosSuccess,
 } from "../redux/videosSlice";
+import Loader from "../components/Loader";
 
 const Container = styled.div`
   display: flex;
@@ -19,7 +20,7 @@ const Container = styled.div`
 
 const Home = ({ type }) => {
   const dispatch = useDispatch();
-  const { videos } = useSelector((state) => state.videos);
+  const { videos, loading } = useSelector((state) => state.videos);
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -40,6 +41,10 @@ const Home = ({ type }) => {
 
     fetchVideos();
   }, [dispatch, type]);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <Container>

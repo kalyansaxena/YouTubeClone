@@ -21,6 +21,7 @@ import { subscription } from "../redux/userSlice";
 import Recommendations from "../components/Recommendations";
 import { axiosInstance } from "../utils/axiosConfig";
 import Swal from "sweetalert2";
+import Loader from "../components/Loader";
 
 const Container = styled.div`
   display: flex;
@@ -124,7 +125,7 @@ const SubsribeButton = styled.button`
 const Video = () => {
   const dispatch = useDispatch();
   const videoId = useLocation().pathname.split("/")[2];
-  const { currentVideo } = useSelector((state) => state.video);
+  const { currentVideo, loading } = useSelector((state) => state.video);
   const { loggedInUser } = useSelector((state) => state.user);
   const [channel, setChannel] = useState({});
   const { videos } = useSelector((state) => state.videos);
@@ -247,6 +248,10 @@ const Video = () => {
       });
     }
   };
+
+  if (loading || !currentVideo) {
+    return <Loader />;
+  }
 
   return (
     <Container>

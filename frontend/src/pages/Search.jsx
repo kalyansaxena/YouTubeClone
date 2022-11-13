@@ -11,6 +11,7 @@ import {
   fetchSearchVideosStart,
   fetchSearchVideosSuccess,
 } from "../redux/searchVideosSlice";
+import Loader from "../components/Loader";
 
 const Container = styled.div`
   display: flex;
@@ -20,7 +21,7 @@ const Container = styled.div`
 
 const Search = () => {
   const dispatch = useDispatch();
-  const { videos } = useSelector((state) => state.searchVideos);
+  const { videos, loading } = useSelector((state) => state.searchVideos);
   const searchQuery = useLocation().search;
 
   useEffect(() => {
@@ -43,6 +44,10 @@ const Search = () => {
 
     fetchVideos();
   }, [dispatch, searchQuery]);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <Container>

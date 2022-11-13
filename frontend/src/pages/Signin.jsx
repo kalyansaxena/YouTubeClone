@@ -1,13 +1,14 @@
 import React from "react";
 import { useState } from "react";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginError, loginStart, loginSuccess } from "../redux/userSlice";
 import { auth, googleAuthProvider } from "../firebase";
 import { signInWithPopup } from "firebase/auth";
 import { Link } from "react-router-dom";
 import { axiosInstance } from "../utils/axiosConfig";
 import Swal from "sweetalert2";
+import Loader from "../components/Loader";
 
 const Container = styled.div`
   display: flex;
@@ -65,6 +66,7 @@ const Signin = () => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { loading } = useSelector((state) => state.user);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -121,6 +123,10 @@ const Signin = () => {
         });
       });
   };
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <Container>

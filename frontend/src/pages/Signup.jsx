@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signupError, signupStart, signupSuccess } from "../redux/userSlice";
 import { auth, googleAuthProvider } from "../firebase";
 import { signInWithPopup } from "firebase/auth";
@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import UploadProfileImage from "../components/UploadProfileImage";
 import { axiosInstance } from "../utils/axiosConfig";
 import Swal from "sweetalert2";
+import Loader from "../components/Loader";
 
 const Container = styled.div`
   display: flex;
@@ -65,6 +66,7 @@ const Signup = () => {
   const [img, setImg] = useState(undefined);
   const [imgPerc, setImgPerc] = useState(0);
   const navigate = useNavigate();
+  const { loading } = useSelector((state) => state.user);
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -137,6 +139,10 @@ const Signup = () => {
         });
       });
   };
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <Container>

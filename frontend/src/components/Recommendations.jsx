@@ -9,6 +9,7 @@ import {
   fetchRecommendationsStart,
   fetchRecommendationsSuccess,
 } from "../redux/recommendationsSlice";
+import Loader from "./Loader";
 
 const Recommendation = styled.div`
   flex: 5;
@@ -16,7 +17,7 @@ const Recommendation = styled.div`
 
 const Recommendations = ({ tags }) => {
   const dispatch = useDispatch();
-  const { videos } = useSelector((state) => state.recommendations);
+  const { videos, loading } = useSelector((state) => state.recommendations);
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -37,6 +38,10 @@ const Recommendations = ({ tags }) => {
 
     fetchVideos();
   }, [dispatch, tags]);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <Recommendation>
