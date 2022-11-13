@@ -80,6 +80,13 @@ const Signin = () => {
     } catch (error) {
       console.log(error);
       dispatch(loginError());
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text:
+          error.response.data.error ||
+          "Error while handling custom authentication",
+      });
     }
   };
 
@@ -105,6 +112,13 @@ const Signin = () => {
       .catch((error) => {
         console.log(error);
         dispatch(loginError());
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text:
+            error.response.data.error ||
+            "Error while handling SignInWithGoogle",
+        });
       });
   };
 

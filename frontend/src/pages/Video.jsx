@@ -156,6 +156,12 @@ const Video = () => {
       } catch (error) {
         dispatch(fetchVideoError());
         console.log(error);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text:
+            error.response.data.error || "Error occured while fetching video",
+        });
       }
     };
 
@@ -177,6 +183,13 @@ const Video = () => {
       dispatch(like(loggedInUser?._id));
     } catch (error) {
       console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text:
+          error.response.data.error ||
+          "Error occured while handling likes of the video",
+      });
     }
   };
 
@@ -194,6 +207,13 @@ const Video = () => {
       dispatch(dislike(loggedInUser?._id));
     } catch (error) {
       console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text:
+          error.response.data.error ||
+          "Error occured while handling dislikes of the video",
+      });
     }
   };
 
@@ -213,6 +233,13 @@ const Video = () => {
       dispatch(subscription(channel?._id));
     } catch (error) {
       console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text:
+          error.response.data.error ||
+          "Error occured while handling subscriptions of the user",
+      });
     }
   };
 

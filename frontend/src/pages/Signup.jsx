@@ -98,6 +98,11 @@ const Signup = () => {
     } catch (error) {
       console.log(error);
       dispatch(signupError());
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error.response.data.error || "Error occured during signup",
+      });
     }
   };
 
@@ -123,6 +128,13 @@ const Signup = () => {
       .catch((error) => {
         console.log(error);
         dispatch(signupError());
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text:
+            error.response.data.error ||
+            "Error occured during SignUpWithGoogle",
+        });
       });
   };
 

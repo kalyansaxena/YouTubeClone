@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import styled from "styled-components";
 import Card from "../components/Card";
 import { axiosInstance } from "../utils/axiosConfig";
+import Swal from "sweetalert2";
 
 const Container = styled.div`
   display: flex;
@@ -20,6 +21,11 @@ const Home = ({ type }) => {
         setVideos((prev) => res.data.videos);
       } catch (error) {
         console.log(error);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: error.response.data.error || "Error fetching videos",
+        });
       }
     };
 

@@ -175,6 +175,11 @@ const Upload = ({ setOpen }) => {
       navigate(`/`);
     } catch (error) {
       console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error.response.data.error || "Unable to upload video",
+      });
     }
   };
 

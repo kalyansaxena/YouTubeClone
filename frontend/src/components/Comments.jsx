@@ -65,6 +65,11 @@ const Comments = ({ videoId, loggedInUser }) => {
         setComments((prev) => res.data.comments);
       } catch (error) {
         console.log(error);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: error.response.data.error || "Error while fetching comments",
+        });
       }
     };
 
@@ -93,6 +98,11 @@ const Comments = ({ videoId, loggedInUser }) => {
       settoggleCommentButtons((prev) => false);
     } catch (error) {
       console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error.response.data.error || "Unable to post a comment",
+      });
     }
   };
 
