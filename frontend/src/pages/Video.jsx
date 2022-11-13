@@ -127,6 +127,7 @@ const Video = () => {
   const { currentVideo } = useSelector((state) => state.video);
   const { loggedInUser } = useSelector((state) => state.user);
   const [channel, setChannel] = useState({});
+  const { videos } = useSelector((state) => state.videos);
 
   useEffect(() => {
     const addView = async () => {
@@ -149,10 +150,15 @@ const Video = () => {
     const fetchVideo = async () => {
       dispatch(fetchVideoStart());
       try {
-        const res = await axiosInstance.get(`/videos/${videoId}`);
-        console.log(res.data);
-        dispatch(fetchVideoSuccess(res.data.video));
-        fetchChannel();
+        let videoIndex = videos.findIndex((video) => video._id === videoId);
+        if (videoIndex !== -1) {
+          let video = videos[videoIndex];
+          dispatch(fetchVideoSuccess(video));
+          fetchChannel();
+          addView();
+        } else {
+          dispatch(fetchVideoSuccess(null));
+        }
       } catch (error) {
         dispatch(fetchVideoError());
         console.log(error);
@@ -165,9 +171,8 @@ const Video = () => {
       }
     };
 
-    addView();
     fetchVideo();
-  }, [videoId, dispatch, currentVideo?.userId]);
+  }, [videoId, dispatch, currentVideo?.userId, videos]);
 
   const handleLike = async () => {
     if (!loggedInUser) {

@@ -1,21 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { axiosInstance } from "../utils/axiosConfig";
 import Card from "./Card";
 import Swal from "sweetalert2";
+import {
+  fetchRecommendationsError,
+  fetchRecommendationsStart,
+  fetchRecommendationsSuccess,
+} from "../redux/recommendationsSlice";
 
 const Recommendation = styled.div`
   flex: 5;
 `;
 
 const Recommendations = ({ tags }) => {
-  const [videos, setVideos] = useState([]);
+  const dispatch = useDispatch();
+  const { videos } = useSelector((state) => state.recommendations);
 
   useEffect(() => {
     const fetchVideos = async () => {
+      dispatch(fetchRecommendationsStart());
       try {
         const res = await axiosInstance.get(`/videos/tags?tags=${tags}`);
-        setVideos((prev) => res.data.videos);
+        dispatch(fetchRecommendationsSuccess(res.data.videos));
       } catch (error) {
         console.log(error);
         Swal.fire({
@@ -23,11 +31,12 @@ const Recommendations = ({ tags }) => {
           title: "Error",
           text: error.response.data.error || "Error fetching recommendations",
         });
+        dispatch(fetchRecommendationsError());
       }
     };
 
     fetchVideos();
-  }, [tags]);
+  }, [dispatch, tags]);
 
   return (
     <Recommendation>

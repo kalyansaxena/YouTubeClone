@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Card from "../components/Card";
 import { axiosInstance } from "../utils/axiosConfig";
 import Swal from "sweetalert2";
+import {
+  fetchVideosError,
+  fetchVideosStart,
+  fetchVideosSuccess,
+} from "../redux/videosSlice";
 
 const Container = styled.div`
   display: flex;
@@ -12,13 +18,15 @@ const Container = styled.div`
 `;
 
 const Home = ({ type }) => {
-  const [videos, setVideos] = useState([]);
+  const dispatch = useDispatch();
+  const { videos } = useSelector((state) => state.videos);
 
   useEffect(() => {
     const fetchVideos = async () => {
+      dispatch(fetchVideosStart());
       try {
         const res = await axiosInstance.get(`/videos/${type}`);
-        setVideos((prev) => res.data.videos);
+        dispatch(fetchVideosSuccess(res.data.videos));
       } catch (error) {
         console.log(error);
         Swal.fire({
@@ -26,11 +34,12 @@ const Home = ({ type }) => {
           title: "Error",
           text: error.response.data.error || "Error fetching videos",
         });
+        dispatch(fetchVideosError());
       }
     };
 
     fetchVideos();
-  }, [type]);
+  }, [dispatch, type]);
 
   return (
     <Container>
